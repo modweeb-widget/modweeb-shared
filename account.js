@@ -1,24 +1,3 @@
-// ========== معالجة تسجيل الخروج ==========
-(function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('logout') === '1') {
-    // مسح بيانات المستخدم
-    localStorage.clear();
-    
-    // إزالة المعلمة من الرابط
-    const newUrl = window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-    
-    // إشعار المستخدم
-    notify("تم تسجيل الخروج بنجاح");
-    
-    // إعادة تحميل الصفحة
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  }
-})();
-
 // ========== تحديث معلومات الجلسة في الواجهة ==========
 async function updateSessionInfo() {
   const timeEl = document.getElementById('sessionTime');
@@ -130,7 +109,7 @@ function updateAccountInfo() {
           <div class="text-sm flex items-center gap-1.5" style="color: var(--bodyC);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M12 13.4299C13.7231 13.4299 15.12 12.0331 15.12 10.3099C15.12 8.58681 13.7231 7.18994 12 7.18994C10.2769 7.18994 8.88 8.58681 8.88 10.3099C8.88 12.0331 10.2769 13.4299 12 13.4299Z'></path><path d='M3.62001 8.49C5.59001 -0.169998 18.42 -0.159997 20.38 8.5C21.53 13.58 18.37 17.88 15.6 20.54C13.59 22.48 10.41 22.48 8.39001 20.54C5.63001 17.88 2.47001 13.57 3.62001 8.49Z'></path></svg><span class="truncate">IP: ${s.ip}</span></div>
           <div class="text-sm flex items-center gap-1.5" style="color: var(--bodyC);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M14.4399 19.05L15.9599 20.57L18.9999 17.53'></path><path d='M12.16 10.87C12.06 10.86 11.94 10.86 11.83 10.87C9.44997 10.79 7.55997 8.84 7.55997 6.44C7.54997 3.99 9.53997 2 11.99 2C14.44 2 16.43 3.99 16.43 6.44C16.43 8.84 14.53 10.79 12.16 10.87Z'></path><path d='M11.99 21.8101C10.17 21.8101 8.36004 21.3501 6.98004 20.4301C4.56004 18.8101 4.56004 16.1701 6.98004 14.5601C9.73004 12.7201 14.24 12.7201 16.99 14.5601'></path></svg><span class="truncate">${s.isCurrent ? 'جلستك الحالية' : 'جلسة سابقة'}</span></div>
         </div>
-        ${s.isCurrent ? `<a href="?logout=1" class="inline-flex items-center justify-center whitespace-nowrap transition-all shrink-0 outline-none gap-1.5 px-2.5 size-9 rounded-md" style="background: var(--linkB); color: var(--white);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54'></path><path d='M15 12H3.62'></path><path d='M5.85 8.6499L2.5 11.9999L5.85 15.3499'></path></svg></a>` : `<button onclick="removeSession(${originalIndex})" class="inline-flex items-center justify-center whitespace-nowrap transition-all shrink-0 outline-none gap-1.5 px-2.5 size-9 rounded-md" style="background: #ef4444; color: var(--white);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M3 6H21'></path><path d='M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6'></path><path d='M8 4V2H16V4'></path></svg></button>`}
+        ${s.isCurrent ? `<button onclick="logoutUser()" class="inline-flex items-center justify-center whitespace-nowrap transition-all shrink-0 outline-none gap-1.5 px-2.5 size-9 rounded-md" style="background: var(--linkB); color: var(--white);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54'></path><path d='M15 12H3.62'></path><path d='M5.85 8.6499L2.5 11.9999L5.85 15.3499'></path></svg></button>` : `<button onclick="removeSession(${originalIndex})" class="inline-flex items-center justify-center whitespace-nowrap transition-all shrink-0 outline-none gap-1.5 px-2.5 size-9 rounded-md" style="background: #ef4444; color: var(--white);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M3 6H21'></path><path d='M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6'></path><path d='M8 4V2H16V4'></path></svg></button>`}
       </div>`;
     });
     container.innerHTML = `<div class="mb-1"></div><div class="flex flex-col gap-3"><div class="compact-title font-bold" style="color: var(--headC);">إدارة الحساب</div><div class="text-sm compact-subtitle" style="color: var(--bodyC);">عرض حسابك وإدارته.</div><div class="flex flex-wrap gap-4 items-center"><span class="relative flex shrink-0 overflow-hidden select-none size-20 border rounded-md" style="border-color: var(--contentL);"><img id="avatarImg" src="${picture || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=0D8ABC&color=fff'}" class="size-full object-cover rounded-md" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D8ABC&color=fff';"></span><div class="overflow-hidden"><div class="text-lg font-semibold wrap-break-word" id="profileName" style="color: var(--headC);">${name}</div><div class="text-sm flex items-center gap-1.5" style="color: var(--bodyC);"><span class="truncate">${email || 'غير متوفر'}</span><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M8.38 12L10.79 14.42L15.62 9.57996'></path><path d='M10.75 2.44995C11.44 1.85995 12.57 1.85995 13.27 2.44995L14.85 3.80995C15.15 4.06995 15.71 4.27995 16.11 4.27995H17.81C18.87 4.27995 19.74 5.14995 19.74 6.20995V7.90995C19.74 8.29995 19.95 8.86995 20.21 9.16995L21.57 10.7499C22.16 11.4399 22.16 12.5699 21.57 13.2699L20.21 14.8499C19.95 15.1499 19.74 15.7099 19.74 16.1099V17.8099C19.74 18.8699 18.87 19.7399 17.81 19.7399H16.11C15.72 19.7399 15.15 19.9499 14.85 20.2099L13.27 21.5699C12.58 22.1599 11.45 22.1599 10.75 21.5699L9.17 20.2099C8.87 19.9499 8.31 19.7399 7.91 19.7399H6.18C5.12 19.7399 4.25 18.8699 4.25 17.8099V16.0999C4.25 15.7099 4.04 15.1499 3.79 14.8499L2.44 13.2599C1.86 12.5699 1.86 11.4499 2.44 10.7599L3.79 9.16995C4.04 8.86995 4.25 8.30995 4.25 7.91995V6.19995C4.25 5.13995 5.12 4.26995 6.18 4.26995H7.91C8.3 4.26995 8.87 4.05995 9.17 3.79995L10.75 2.44995Z'></path></svg></div><div class="text-sm truncate" style="color: var(--bodyC);">تاريخ الانضمام: ${formatDate(finalJoinDate)}</div></div></div><div class="flex flex-col gap-2"><div class="font-medium" style="color: var(--headC);">جلسات نشطة</div><div class="grid gap-2">${sessionsHTML}</div></div><div class="flex gap-2"><a href="/" class="inline-flex items-center justify-center whitespace-nowrap transition-all outline-none gap-1.5 px-2.5 h-8 flex-1 rounded-md border text-sm font-medium" style="background: var(--contentB); border-color: var(--contentL); color: var(--bodyC);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M2 22H22' stroke-miterlimit='10'></path><path d='M2.94995 22L2.99995 9.96999C2.99995 9.35999 3.28995 8.78004 3.76995 8.40004L10.77 2.95003C11.49 2.39003 12.5 2.39003 13.23 2.95003L20.23 8.39003C20.72 8.77003 21 9.34999 21 9.96999V22' stroke-miterlimit='10'></path><path d='M15.5 11H8.5C7.67 11 7 11.67 7 12.5V22H17V12.5C17 11.67 16.33 11 15.5 11Z' stroke-miterlimit='10'></path><path d='M10 16.25V17.75' stroke-miterlimit='10'></path><path d='M10.5 7.5H13.5' stroke-miterlimit='10'></path></svg>الرئيسية</a><a href="?logout=1" class="inline-flex items-center justify-center whitespace-nowrap transition-all outline-none gap-1.5 px-2.5 h-8 flex-1 rounded-md text-sm font-medium" style="background: var(--linkB); color: var(--white);"><svg class='line' viewBox='0 0 24 24' width='14' height='14'><path d='M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54'></path><path d='M15 12H3.62'></path><path d='M5.85 8.6499L2.5 11.9999L5.85 15.3499'></path></svg>خروج</a></div></div>`;
@@ -162,3 +141,10 @@ window.addEventListener('pageshow', (event) => { if (event.persisted) updateAcco
 document.addEventListener('DOMContentLoaded', updateAccountInfo);
 window.addEventListener('storage', updateAccountInfo);
 setTimeout(() => { addCurrentSession(); }, 500);
+
+function logoutUser() {
+  localStorage.clear();
+  sessionStorage.removeItem('justLoggedOut'); // optional
+  notify("تم تسجيل الخروج بنجاح");
+  updateAccountInfo();  // تحديث الواجهة مباشرة بدون إعادة تحميل
+}
