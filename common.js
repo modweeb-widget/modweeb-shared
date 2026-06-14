@@ -1,3 +1,18 @@
+// ========== معالجة تسجيل الخروج ==========
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('logout') === '1') {
+    localStorage.clear();
+    // إزالة معامل logout من الرابط بدون إعادة تحميل عن طريق تحديث history
+    const newUrl = window.location.pathname + (window.location.hash || '');
+    window.history.replaceState({}, document.title, newUrl);
+    notify('تم تسجيل الخروج بنجاح');
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+})();
+
 // ========== toast notification ==========
 function notify(msg) {
   const toast = document.getElementById("toastMessage");
