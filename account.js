@@ -1,3 +1,25 @@
+// ========== معالجة تسجيل الخروج ==========
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('logout') === '1') {
+    // مسح بيانات المستخدم
+    localStorage.clear();
+    
+    // إزالة المعلمة من الرابط
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+    
+    // إشعار المستخدم
+    notify("تم تسجيل الخروج بنجاح");
+    
+    // إعادة تحميل الصفحة
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+})();
+
+// ========== تحديث معلومات الجلسة في الواجهة ==========
 async function updateSessionInfo() {
   const timeEl = document.getElementById('sessionTime');
   const osEl = document.getElementById('sessionOS');
@@ -11,6 +33,7 @@ async function updateSessionInfo() {
   }
 }
 
+// ========== إعدادات تعديل الملف الشخصي ==========
 function setupEditProfileListeners() {
   const settingsBtn = document.getElementById('showSettingsBtn');
   const settingsPanel = document.getElementById('settingsPanel');
@@ -83,6 +106,7 @@ function setupEditProfileListeners() {
   }
 }
 
+// ========== تحديث بطاقة الحساب الرئيسية ==========
 function updateAccountInfo() {
   const container = document.getElementById('accountCardContainer');
   if (!container) return;
@@ -117,6 +141,7 @@ function updateAccountInfo() {
   }
 }
 
+// ========== مستمعي الأحداث ==========
 window.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'loginSuccess') {
     const user = event.data.user;
