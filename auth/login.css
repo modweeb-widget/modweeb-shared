@@ -1,0 +1,6 @@
+.login-container h1,.login-container h2,.login-container h3,.login-container p,.login-container span{margin:0;padding:0;}
+.content-wrapper{flex:1;display:flex;justify-content:center;align-items:center;padding:20px;}
+.max-w-md{max-width:330px !important;transform:translateY(-80px);}
+.login-container{display:flex;justify-content:center;align-items:center;height:100%;}
+#custom-google-btn.button-outline{border-radius:15px;}
+.logo-box svg{width:100%;height:100%;display:block;}

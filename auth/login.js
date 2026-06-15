@@ -6,7 +6,6 @@ async function getUserInfo(accessToken) {
     });
     if (!res.ok) throw new Error('Failed to fetch user info');
     const user = await res.json();
-    const userData = { name: user.name, email: user.email, image: user.picture };
     if (window.opener && !window.opener.closed) {
       localStorage.setItem('userLoggedIn', 'true');
       localStorage.setItem('userName', user.name);
@@ -14,8 +13,7 @@ async function getUserInfo(accessToken) {
       localStorage.setItem('userPicture', user.picture);
       if (!localStorage.getItem('userJoinDate'))
         localStorage.setItem('userJoinDate', new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
-      window.opener.postMessage({ type: 'loginSuccess', user: userData }, window.location.origin);
-      window.opener.postMessage({ type: 'storageUpdate' }, window.location.origin);
+      window.opener.postMessage({ type: 'loginSuccess', user: { name: user.name, email: user.email, image: user.picture } }, window.location.origin);
       notify('تم تسجيل الدخول بنجاح!');
       setTimeout(() => window.close(), 1500);
     } else {
@@ -34,7 +32,6 @@ async function getUserInfo(accessToken) {
     notify('فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.');
   }
 }
-
 function initGSI() {
   if (typeof google !== 'undefined' && google.accounts) {
     const client = google.accounts.oauth2.initTokenClient({
@@ -42,16 +39,13 @@ function initGSI() {
       scope: 'openid profile email',
       callback: (resp) => {
         if (resp && resp.access_token) getUserInfo(resp.access_token);
-        else notify('لم يتم العثور على رمز الوصول. يرجى المحاولة مرة أخرى.');
+        else notify('لم يتم العثور على رمز الوصول.');
       }
     });
     const btn = document.getElementById('custom-google-btn');
     if (btn) btn.addEventListener('click', () => client.requestAccessToken());
-    if (window.opener) {
-      try { window.resizeTo(500, 600); } catch(e) {}
-    }
   } else {
-    notify('فشل تحميل مكتبة جوجل للمصادقة. يرجى التحقق من اتصالك بالإنترنت.');
+    notify('فشل تحميل مكتبة جوجل للمصادقة.');
   }
 }
 if (typeof google !== 'undefined' && google.accounts) initGSI();

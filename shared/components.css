@@ -1,0 +1,26 @@
+/* Preloader */
+.pldW{display:none;direction:ltr;position:fixed;top:0;right:0;bottom:0;left:0;background:var(--bodyB);align-items:center;justify-content:center;z-index:99999;visibility:visible;opacity:1;transition:all .8s ease}
+.pldW.e{display:flex}
+.pldW.h{opacity:0;visibility:hidden}
+.svg-loader{position:relative;width:80px;height:80px}
+.svg-loader svg{width:100%;height:100%}
+.svg-loader path{stroke-width:8;stroke-dasharray:1000;stroke-dashoffset:1000;fill:transparent}
+.svg-loader .part1{stroke:rgba(225,20,98,0.9);animation:draw 1s ease-in-out forwards,fill-part1 .3s ease-in-out 1s forwards}
+.svg-loader .part2{stroke:rgba(111,202,220,0.9);animation:draw 1s ease-in-out .25s forwards,fill-part2 .3s ease-in-out 1.25s forwards}
+.svg-loader .part3{stroke:rgba(61,184,143,0.9);animation:draw 1s ease-in-out .5s forwards,fill-part3 .3s ease-in-out 1.5s forwards}
+.svg-loader .part4{stroke:rgba(233,169,32,0.9);animation:draw 1s ease-in-out .75s forwards,fill-part4 .3s ease-in-out 1.75s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fill-part1{to{fill:rgba(225,20,98,0.9)}}
+@keyframes fill-part2{to{fill:rgba(111,202,220,0.9)}}
+@keyframes fill-part3{to{fill:rgba(61,184,143,0.9)}}
+@keyframes fill-part4{to{fill:rgba(233,169,32,0.9)}}
+.pldW::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(225,20,98,.1) 0,rgba(111,202,220,.1) 50%,rgba(61,184,143,.1) 100%);animation:pulse-bg 1.5s infinite ease-out;z-index:-1}
+@keyframes pulse-bg{0%{transform:translate(-50%,-50%) scale(.8);opacity:.6}50%{background:radial-gradient(circle,rgba(233,169,32,.1) 0,rgba(225,20,98,.1) 50%,rgba(111,202,220,.1) 100%)}70%{transform:translate(-50%,-50%) scale(1.2);opacity:0}100%{opacity:0}}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--notifB);color:var(--notifC);padding:10px 20px;border-radius:8px;font-size:13px;z-index:99999;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
+.toast.active{opacity:1;pointer-events:auto;}
+
+/* Card */
+.card{background:var(--contentB);border-radius:20px;box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);border:1px solid var(--contentL);padding:0;margin:0 auto;}
+@media (max-width:400px){.card{max-width:90vw;}}
